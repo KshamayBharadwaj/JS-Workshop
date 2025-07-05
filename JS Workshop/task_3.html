@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Table Generator (No For Loop)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0f0f, #1a1a2e);
+      color: #eee;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 50px 20px;
+    }
+
+    .container-box {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    input.form-control {
+      background: #111820;
+      border: 1px solid #00ffc3;
+      color: #00ffcc;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+    }
+
+    input.form-control:focus {
+      background: #0d121a;
+      border: 1px solid #00ffe5;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+      color: #00ffcc;
+    }
+
+    button {
+      background-color: #00a8ff;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      font-weight: bold;
+      border-radius: 10px;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0097e6;
+      box-shadow: 0 0 15px rgba(0, 168, 255, 0.4);
+    }
+
+    .table-output {
+      margin-top: 30px;
+    }
+
+    .table-box {
+      background: #2f3640;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.08);
+    }
+
+    .table-box h5 {
+      color: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container-box">
+    <h2 class="text-center mb-4">📊 Table Generator (No For Loop)</h2>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <input type="number" class="form-control" id="start" placeholder="Start Number" />
+      </div>
+      <div class="col-md-6">
+        <input type="number" class="form-control" id="end" placeholder="End Number" />
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button onclick="generateTables()">Generate</button>
+    </div>
+
+    <div class="table-output" id="tableOutput"></div>
+  </div>
+
+  <script>
+    function generateTables() {
+      const start = parseInt(document.getElementById('start').value);
+      const end = parseInt(document.getElementById('end').value);
+      const outputDiv = document.getElementById('tableOutput');
+      outputDiv.innerHTML = '';
+
+      if (isNaN(start) || isNaN(end)) {
+        outputDiv.innerHTML = `<p class="text-danger">⚠️ Please enter valid numbers.</p>`;
+        return;
+      }
+
+      // Generate tables without using for loop
+      let current = start;
+
+      function createTable(n) {
+        if (n > end) return;
+
+        const table = Array.from({ length: 10 }, (_, i) => `${n} × ${i + 1} = ${n * (i + 1)}`);
+        const box = document.createElement('div');
+        box.className = 'table-box';
+        box.innerHTML = `<h5>📌 Table of ${n}</h5><pre>${table.join('\n')}</pre>`;
+        outputDiv.appendChild(box);
+
+        // Recursively call for next number
+        createTable(n + 1);
+      }
+
+      createTable(current);
+    }
+  </script>
+
+</body>
+</html>

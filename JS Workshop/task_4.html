@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Event Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #00ffc8;
+    }
+
+    .event-area {
+      margin: 15px 0;
+      padding: 15px;
+      border: 2px dashed #444;
+      border-radius: 10px;
+      background: #1e1e1e;
+    }
+
+    input, select, button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      background: #2e2e2e;
+      color: #00ffcc;
+      margin-top: 5px;
+    }
+
+    #output {
+      margin-top: 20px;
+      padding: 10px;
+      background: #2e2e2e;
+      border-radius: 10px;
+      min-height: 80px;
+      white-space: pre-wrap;
+      color: #00ffcc;
+    }
+
+    #hoverBox, #mouseMoveBox, #dblClickBox {
+      padding: 20px;
+      text-align: center;
+      background: #333;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📚 DOM Events in Action</h2>
+
+  <!-- CLICK -->
+  <div class="event-area">
+    <label>1️⃣ Click Event:</label><br>
+    <button onclick="showMessage('✅ Button Clicked!')">Click Me</button>
+  </div>
+
+  <!-- ONCHANGE -->
+  <div class="event-area">
+    <label>2️⃣ OnChange Event:</label><br>
+    <select onchange="showMessage('🔄 Changed to: ' + this.value)">
+      <option value="">Select</option>
+      <option value="HTML">HTML</option>
+      <option value="CSS">CSS</option>
+      <option value="JavaScript">JavaScript</option>
+    </select>
+  </div>
+
+  
+  <!-- ONINPUT -->
+  <div class="event-area">
+      <label>4️⃣ OnInput Event:</label><br>
+      <input type="text" oninput="showMessage('⌨️ Typing: ' + this.value)" placeholder="Type something..." />
+    </div>
+    
+    <!-- ONMOUSEMOVE -->
+    <div class="event-area">
+        <label>5️⃣ Mouse Move Event:</label><br>
+    <div id="mouseMoveBox" onmousemove="showMessage('🌀 Mouse is moving...')">
+        Move your mouse here
+    </div>
+  </div>
+
+  <!-- ONDBLCLICK -->
+  <div class="event-area">
+      <label>6️⃣ Double Click Event:</label><br>
+    <div id="dblClickBox" ondblclick="showMessage('💥 Double Clicked!')">
+        Double Click Me
+    </div>
+</div>
+
+<!-- ONKEYDOWN -->
+<div class="event-area">
+    <label>7️⃣ Key Down Event:</label><br>
+    <input type="text" onkeydown="showMessage('⬇️ Key pressed: ' + event.key)" placeholder="Press any key..." />
+</div>
+
+<!-- VALIDATION -->
+<div class="event-area">
+    <label>8️⃣ Validate (Check empty input):</label><br>
+    <input type="text" id="validateInput" placeholder="Enter something..." />
+    <button onclick="validateInput()">Validate</button>
+</div>
+
+<!-- HOVER (mouseenter) -->
+<div class="event-area">
+  <label>3️⃣ Hover Event:</label><br>
+  <div id="hoverBox" onmouseenter="showMessage('🖱️ You hovered over the box')">
+    Hover Over Me
+  </div>
+</div>
+<!-- OUTPUT -->
+<div id="output">📝 Event output will appear here...</div>
+
+  <script>
+    function showMessage(msg) {
+      document.getElementById('output').textContent = "👉 " + msg;
+    }
+
+    function validateInput() {
+      const input = document.getElementById('validateInput').value.trim();
+      if (input === "") {
+        showMessage("⚠️ Please enter a value.");
+      } else {
+        showMessage("✅ Valid input: " + input);
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Advanced Letter Counter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0f0f, #1a1a2e);
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .counter-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      width: 400px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.07);
+      backdrop-filter: blur(10px);
+    }
+
+    h3 {
+      color: #00ffe5;
+      text-shadow: 0 0 5px #00ffe5;
+    }
+
+    .form-control {
+      background: #222;
+      border: none;
+      color: #00ffcc;
+      font-size: 1.2rem;
+      border-radius: 10px;
+    }
+
+    .form-control:focus {
+      background: #222;
+      color: #00ffcc;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+    }
+
+    .result-box {
+      background: #1e272e;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #00ffcc;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+    }
+
+    .result-box span {
+      display: block;
+      margin-top: 5px;
+    }
+
+    ::selection {
+      background: #00ffcc55;
+    }
+
+    .form-control {
+  background: #111820;
+  border: 1px solid #00ffc3;
+  color: #00ffcc;
+  font-size: 1.3rem;
+  border-radius: 10px;
+  padding: 12px 15px;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+  caret-color: #00ffc3;
+}
+
+.form-control::placeholder {
+  color: #00ffc36c;
+}
+
+.form-control:focus {
+  outline: none;
+  background: #0d121a;
+  border: 1px solid #00ffe5;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+}
+
+input.form-control {
+  transition: all 0.2s ease-in-out;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="counter-box text-center">
+    <h3>🧠 Letter Counter Pro</h3>
+    <p class="text-muted">Count letters, vowels, consonants & words</p>
+    <input type="text" id="inputText" class="form-control" placeholder="Start typing..." oninput="countEverything()">
+
+    <div class="result-box text-start mt-3" id="result">
+      <span>🔤 Letters: 0</span>
+      <span>🟣 Vowels: 0</span>
+      <span>🔵 Consonants: 0</span>
+      <span>📚 Words: 0</span>
+    </div>
+  </div>
+
+  <script>
+    function countEverything() {
+      const input = document.getElementById('inputText').value;
+
+      // Remove all non-letters
+      const letters = input.replace(/[^a-zA-Z]/g, '');
+      const vowels = letters.match(/[aeiouAEIOU]/g) || [];
+      const consonants = letters.length - vowels.length;
+
+      // Word count using split & filter
+      const words = input.trim().split(/\s+/).filter(w => w.length > 0);
+
+      document.getElementById('result').innerHTML = `
+        <span>🔤 Letters: ${letters.length}</span>
+        <span>🟣 Vowels: ${vowels.length}</span>
+        <span>🔵 Consonants: ${consonants}</span>
+        <span>📚 Words: ${words.length}</span>
+      `;
+    }
+  </script>
+
+</body>
+</html>

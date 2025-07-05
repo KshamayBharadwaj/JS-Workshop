@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Hub 🎮</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .game-section { display: none; }
+    .active-section { display: block; }
+  </style>
+</head>
+<body class="bg-light">
+
+  <div class="container text-center py-5">
+    <h1 class="mb-4">🎮 Welcome to the Game Hub</h1>
+    
+    <div class="row justify-content-center">
+      <div class="col-md-4 mb-3">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">🧠 Contexto Clone</h5>
+            <p class="card-text">Guess the secret word based on similarity.</p>
+            <button onclick="showGame('contextoGame')" class="btn btn-primary">Play</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">🪨 Rock Paper Scissors</h5>
+            <p class="card-text">Classic RPS game vs Computer.</p>
+            <button onclick="showGame('rpsGame')" class="btn btn-success">Play</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">🧮 Quick Math Quiz</h5>
+            <p class="card-text">Solve math problems fast.</p>
+            <button onclick="showGame('mathGame')" class="btn btn-warning">Play</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contexto -->
+  <div id="contextoGame" class="game-section text-center p-4 bg-primary text-light">
+    <h2>🧠 Contexto Game</h2>
+    <input type="text" id="wordGuess" class="form-control w-25 mx-auto mt-3" placeholder="Enter your word">
+    <button onclick="checkContexto()" class="btn btn-light mt-2">Submit</button>
+    <ul id="contextoList" class="list-group mt-3 w-50 mx-auto"></ul>
+    <p id="contextoMsg" class="mt-3 h5"></p>
+    <button onclick="goBack()" class="btn btn-outline-light mt-3">Back</button>
+  </div>
+
+  <!-- RPS -->
+  <div id="rpsGame" class="game-section text-center p-4 bg-dark text-light">
+    <h2>🪨 Rock Paper Scissors</h2>
+    <div class="mt-3">
+      <button class="btn btn-outline-light m-1" onclick="play('rock')">Rock</button>
+      <button class="btn btn-outline-light m-1" onclick="play('paper')">Paper</button>
+      <button class="btn btn-outline-light m-1" onclick="play('scissors')">Scissors</button>
+    </div>
+    <p id="result" class="mt-3 h5"></p>
+    <button onclick="goBack()" class="btn btn-outline-light mt-3">Back</button>
+  </div>
+
+  <!-- Math Game -->
+  <div id="mathGame" class="game-section text-center p-4 bg-warning-subtle">
+    <h2>🧮 Quick Math Quiz</h2>
+    <h3 id="question" class="mt-3"></h3>
+    <input type="number" id="answer" class="form-control w-25 mx-auto">
+    <button onclick="checkAnswer()" class="btn btn-primary mt-2">Submit</button>
+    <p id="feedback" class="mt-2"></p>
+    <button onclick="goBack()" class="btn btn-outline-dark mt-3">Back</button>
+  </div>
+
+  <script>
+    // Game loader
+    function showGame(id) {
+      document.querySelector('.container').style.display = 'none';
+      document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active-section'));
+      document.getElementById(id).classList.add('active-section');
+      if (id === 'mathGame') generateQuestion();
+    }
+
+    function goBack() {
+      document.querySelector('.container').style.display = 'block';
+      document.querySelectorAll('.game-section').forEach(s => s.classList.remove('active-section'));
+      document.getElementById('result').innerText = '';
+      document.getElementById('feedback').innerText = '';
+      document.getElementById('contextoList').innerHTML = '';
+      document.getElementById('contextoMsg').innerText = '';
+    }
+
+    // Rock Paper Scissors
+    function play(user) {
+      const choices = ['rock', 'paper', 'scissors'];
+      const comp = choices[Math.floor(Math.random() * 3)];
+      let result = "";
+
+      if (user === comp) result = `🤝 It's a tie! Both chose ${user}`;
+      else if (
+        (user === 'rock' && comp === 'scissors') ||
+        (user === 'scissors' && comp === 'paper') ||
+        (user === 'paper' && comp === 'rock')
+      ) result = `🎉 You Win! Computer chose ${comp}`;
+      else result = `💀 You Lose! Computer chose ${comp}`;
+
+      document.getElementById('result').innerText = result;
+    }
+
+    // Math Quiz
+    let num1, num2, correctAnswer;
+
+    function generateQuestion() {
+      num1 = Math.floor(Math.random() * 10) + 1;
+      num2 = Math.floor(Math.random() * 10) + 1;
+      correctAnswer = num1 + num2;
+      document.getElementById('question').innerText = `What is ${num1} + ${num2}?`;
+    }
+
+    function checkAnswer() {
+      const userAns = parseInt(document.getElementById('answer').value);
+      const feedback = document.getElementById('feedback');
+      if (userAns === correctAnswer) feedback.innerText = "✅ Correct!";
+      else feedback.innerText = `❌ Wrong! It was ${correctAnswer}`;
+      generateQuestion();
+    }
+
+    // Contexto Game
+    const secretWord = "apple";
+    const contextoList = document.getElementById("contextoList");
+    let contextoAttempts = 0;
+
+    function checkContexto() {
+      const guess = document.getElementById('wordGuess').value.toLowerCase().trim();
+      contextoAttempts++;
+
+      if (!guess) return;
+
+      let similarity = 100 - Math.abs(secretWord.charCodeAt(0) - guess.charCodeAt(0)) * 10; // mock logic
+      similarity = Math.max(0, Math.min(100, similarity)); // clamp 0-100
+
+      const li = document.createElement("li");
+      li.classList.add("list-group-item");
+      li.innerText = `${guess} → Similarity: ${similarity.toFixed(1)}%`;
+      contextoList.appendChild(li);
+
+      if (guess === secretWord) {
+        document.getElementById("contextoMsg").innerText = `🎉 You found it in ${contextoAttempts} guesses! The word was "${secretWord}".`;
+      }
+
+      document.getElementById('wordGuess').value = "";
+    }
+  </script>
+</body>
+</html>

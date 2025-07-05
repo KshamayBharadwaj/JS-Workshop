@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Letter Counter: Normal vs Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0f0f, #1a1a2e);
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .counter-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.07);
+      backdrop-filter: blur(10px);
+      margin-bottom: 30px;
+    }
+
+    .form-control {
+      background: #111820;
+      border: 1px solid #00ffc3;
+      color: #00ffcc;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      padding: 12px 15px;
+      box-shadow: 0 0 8px rgba(0, 255, 255, 0.2);
+      caret-color: #00ffc3;
+    }
+
+    .form-control::placeholder {
+      color: #00ffc36c;
+    }
+
+    .form-control:focus {
+      outline: none;
+      background: #0d121a;
+      border: 1px solid #00ffe5;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    }
+
+    .result-box {
+      background: #1e272e;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #00ffcc;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+    }
+
+    .result-box span {
+      display: block;
+      margin-top: 5px;
+    }
+
+    h4 {
+      color: #00ffe5;
+      text-shadow: 0 0 5px #00ffe5;
+    }
+
+    @media (max-width: 768px) {
+      .col-md-6 {
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="row text-center mb-4">
+      <h2>🧠 Letter Counter Showdown: Normal vs Pro</h2>
+      <p class="text-muted">Try both and see the difference!</p>
+    </div>
+
+    <div class="row">
+      <!-- 🟢 Normal Version -->
+      <div class="col-md-6">
+        <div class="counter-box text-center">
+          <h4>🔤 Basic Letter Counter</h4>
+          <p class="text-muted">Counts only letters (A–Z)</p>
+          <input type="text" id="basicInput" class="form-control" placeholder="Type something..." oninput="countBasicLetters()">
+          <div class="result-box mt-3" id="basicResult">Letters: 0</div>
+        </div>
+      </div>
+
+      <!-- 🟣 Pro Version -->
+      <div class="col-md-6">
+        <div class="counter-box text-center">
+          <h4>💎 Pro Letter Counter</h4>
+          <p class="text-muted">Counts letters, vowels, consonants, and words</p>
+          <input type="text" id="proInput" class="form-control" placeholder="Type something..." oninput="countEverythingPro()">
+          <div class="result-box mt-3 text-start" id="proResult">
+            <span>🔤 Letters: 0</span>
+            <span>🟣 Vowels: 0</span>
+            <span>🔵 Consonants: 0</span>
+            <span>📚 Words: 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function countBasicLetters() {
+      const input = document.getElementById('basicInput').value;
+      const lettersOnly = input.replace(/[^a-zA-Z]/g, '');
+      document.getElementById('basicResult').textContent = `Letters: ${lettersOnly.length}`;
+    }
+
+    function countEverythingPro() {
+      const input = document.getElementById('proInput').value;
+      const letters = input.replace(/[^a-zA-Z]/g, '');
+      const vowels = letters.match(/[aeiouAEIOU]/g) || [];
+      const consonants = letters.length - vowels.length;
+      const words = input.trim().split(/\s+/).filter(w => w.length > 0);
+
+      document.getElementById('proResult').innerHTML = `
+        <span>🔤 Letters: ${letters.length}</span>
+        <span>🟣 Vowels: ${vowels.length}</span>
+        <span>🔵 Consonants: ${consonants}</span>
+        <span>📚 Words: ${words.length}</span>
+      `;
+    }
+  </script>
+
+</body>
+</html>
